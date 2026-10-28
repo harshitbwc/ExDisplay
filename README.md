@@ -43,7 +43,25 @@ so there is no raw USB or networking code on either side.
 
 ---
 
-## Quick start
+## Install
+
+### Option A — download a release (easiest)
+
+From the [Releases page](https://github.com/harshitbwc/ExDisplay/releases):
+
+1. **Mac:** download `ExDisplay-<version>-mac-arm64.zip`, unzip, drag `ExDisplay.app`
+   to `/Applications`. The app is ad-hoc signed (not notarized), so the first launch
+   is blocked by Gatekeeper — on macOS 15+ open System Settings → Privacy & Security →
+   **Open Anyway**, or run `xattr -dr com.apple.quarantine /Applications/ExDisplay.app`.
+2. **Tablet:** download `ExDisplay-<version>-android.apk` and install it
+   (`adb install -r ExDisplay-<version>-android.apk`, or allow "install unknown apps").
+3. Install `adb` on the Mac: `brew install android-platform-tools`.
+
+Each release lists SHA-256 checksums next to the files. Always install the Mac and
+Android apps from the **same release** (see the compatibility table in the
+[CHANGELOG](CHANGELOG.md)).
+
+### Option B — build from source
 
 ```bash
 # 1. Build & install the Mac app
@@ -144,7 +162,7 @@ See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) if something doesn't work.
 ```
 mac/      SwiftPM package — menu-bar host app + ExDisplayCore (protocol) + tests
 android/  Gradle app — decoder + touch client
-CLAUDE.md                 Original design brief / architecture decisions
+CONTRIBUTING.md            Build, test, and release instructions
 CHANGELOG.md              Release history + Mac↔Android compatibility matrix
 SECURITY.md               Privacy, network exposure, permissions
 TESTING.md                Manual QA checklist + device matrix
