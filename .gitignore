@@ -1,0 +1,39 @@
+# ── macOS ──────────────────────────────────────────────
+.DS_Store
+
+# ── Swift / SwiftPM (mac host) ─────────────────────────
+mac/.build/
+mac/.swiftpm/
+mac/ExDisplay.app/
+*.xcodeproj
+*.xcworkspace
+
+# ── Android / Gradle ───────────────────────────────────
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+android/captures/
+*.iml
+
+# ── Signing secrets — NEVER commit ─────────────────────
+*.keystore
+*.jks
+*.p12
+*.cer
+*.mobileprovision
+keystore.properties
+
+# ── Build artifacts ────────────────────────────────────
+*.apk
+*.aab
+*.dmg
+*.zip
+
+# ── Misc ───────────────────────────────────────────────
+*.log
+.env
+
+# ── Local-only notes ───────────────────────────────────
+CLAUDE.md
