@@ -1,0 +1,61 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+// Single source of truth for the version — repo-root VERSION file.
+def exVersion = file("${rootDir}/../VERSION").exists()
+        ? file("${rootDir}/../VERSION").text.trim()
+        : "0.0.0"
+
+android {
+    namespace 'io.github.harshitbwc.exdisplay'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "io.github.harshitbwc.exdisplay"
+        minSdk 26
+        targetSdk 34
+        versionCode 1
+        versionName exVersion
+    }
+
+    // Release signing. Credentials come from env vars (CI) or an untracked
+    // keystore.properties (local); with neither, the release APK is left unsigned.
+    def ksProps = new Properties()
+    def ksFile = rootProject.file('keystore.properties')
+    if (ksFile.exists()) ksFile.withInputStream { ksProps.load(it) }
+    def ksPath  = System.getenv('EXDISPLAY_KEYSTORE')          ?: ksProps['storeFile']
+    def ksPass  = System.getenv('EXDISPLAY_KEYSTORE_PASSWORD') ?: ksProps['storePassword']
+    def keyAlias = System.getenv('EXDISPLAY_KEY_ALIAS')        ?: ksProps['keyAlias']
+    def keyPass = System.getenv('EXDISPLAY_KEY_PASSWORD')      ?: ksProps['keyPassword']
+
+    signingConfigs {
+        if (ksPath && ksPass && keyAlias && keyPass) {
+            release {
+                storeFile file(ksPath)
+                storePassword ksPass
+                keyAlias keyAlias
+                keyPassword keyPass
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            if (signingConfigs.findByName('release')) signingConfig signingConfigs.release
+        }
+        debug   { debuggable true }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions { jvmTarget = '1.8' }
+}
+
+dependencies {
+    // No AndroidX needed — using plain android.app.Activity + SurfaceView
+}

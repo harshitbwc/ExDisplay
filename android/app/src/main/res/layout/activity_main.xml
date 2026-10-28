@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <SurfaceView
+        android:id="@+id/surfaceView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <!-- Overlay column: dot + button, top-left, non-blocking -->
+    <LinearLayout
+        android:id="@+id/overlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_margin="10dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:clickable="false"
+        android:focusable="false">
+
+        <!-- Status dot -->
+        <View
+            android:id="@+id/statusDot"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:background="@drawable/dot_circle"/>
+
+        <!-- Pause / Resume button -->
+        <Button
+            android:id="@+id/pauseButton"
+            android:layout_width="32dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/btn_floating"
+            android:text="⏸"
+            android:textColor="#FFFFFF"
+            android:textSize="11sp"
+            android:padding="0dp"
+            android:alpha="0.72"/>
+
+    </LinearLayout>
+
+</FrameLayout>
