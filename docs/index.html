@@ -9,7 +9,13 @@
 <meta property="og:description" content="A real extended display for Apple Silicon Macs, over USB, with touch. Free and open source.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://harshitbwc.github.io/ExDisplay/">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='6' width='26' height='17' rx='3' fill='%232563eb'/%3E%3Crect x='12' y='25' width='8' height='2' rx='1' fill='%232563eb'/%3E%3C/svg%3E">
+<meta property="og:image" content="https://harshitbwc.github.io/ExDisplay/assets/banner.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://harshitbwc.github.io/ExDisplay/assets/banner.png">
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <style>
   :root {
     --bg: #ffffff; --bg-alt: #f5f7fa; --fg: #14181f; --muted: #566074;
@@ -75,8 +81,8 @@
   svg .arrowhead { fill: var(--muted); }
   svg .zone { fill: none; stroke: var(--line); stroke-dasharray: 5 5; stroke-width: 1.5; }
 
-  ol.steps { list-style: none; padding: 0; margin: 20px 0 0; counter-reset: s; display: grid; gap: 14px; }
-  ol.steps > li { counter-increment: s; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px 18px 64px; position: relative; }
+  ol.steps { list-style: none; padding: 0; margin: 20px 0 0; counter-reset: s; display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  ol.steps > li { min-width: 0; counter-increment: s; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px 18px 64px; position: relative; }
   ol.steps > li::before { content: counter(s); position: absolute; left: 20px; top: 18px; width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: var(--accent-fg); font-weight: 700; display: grid; place-items: center; }
   ol.steps h3 { margin-bottom: 6px; }
   ol.steps p:last-child, ol.steps pre:last-child { margin-bottom: 0; }
@@ -91,6 +97,18 @@
   summary { cursor: pointer; font-weight: 600; }
   details p { margin: 10px 0 0; color: var(--muted); }
 
+
+  nav .brand { display: inline-flex; align-items: center; gap: 10px; }
+  nav .brand img { border-radius: 7px; display: block; }
+  .video-wrap { margin-top: 28px; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: #0A0F1E; box-shadow: 0 20px 60px rgba(0,0,0,0.18); }
+  .video-wrap video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; }
+  .assets { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-top: 20px; }
+  .asset { background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; }
+  .asset .thumb { background: #0A0F1E; display: grid; place-items: center; aspect-ratio: 16 / 9; padding: 14px; }
+  .asset .thumb img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px; }
+  .asset .meta { padding: 12px 16px 14px; font-size: 0.92rem; }
+  .asset .meta strong { display: block; }
+  .asset .meta a { margin-right: 12px; }
   footer { border-top: 1px solid var(--line); padding: 32px 0 48px; color: var(--muted); font-size: 0.92rem; }
   footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
   @media (max-width: 560px) {
@@ -104,8 +122,9 @@
 
 <nav>
   <div class="wrap">
-    <a class="brand" href="#top">ExDisplay</a>
+    <a class="brand" href="#top"><img src="assets/logo.svg" alt="" width="28" height="28"> ExDisplay</a>
     <div class="links">
+      <a href="#video">Video</a>
       <a href="#how">How it works</a>
       <a href="#install">Install</a>
       <a href="#touch">Touch</a>
@@ -127,6 +146,20 @@
     <p class="small" id="dl-note">Apple Silicon Mac (macOS 14+) and an Android 8.0+ tablet · <a href="https://github.com/harshitbwc/ExDisplay/releases/latest">all releases</a></p>
   </div>
 </header>
+
+<section id="video">
+  <div class="wrap">
+    <h2>See it in action</h2>
+    <p class="lede">A 37-second tour: plug in, drag a window across, and use touch like a trackpad.</p>
+    <div class="video-wrap">
+      <video controls preload="metadata" playsinline poster="assets/poster.jpg">
+        <source src="assets/launch.mp4" type="video/mp4">
+        Your browser can't play this video. <a href="assets/launch.mp4">Download it</a> instead.
+      </video>
+    </div>
+    <p class="small" style="margin-top:10px">An animated overview made with <a href="https://www.remotion.dev/">Remotion</a>, not a screen recording.</p>
+  </div>
+</section>
 
 <section class="alt" id="features">
   <div class="wrap">
@@ -280,6 +313,23 @@ adb devices        # your tablet should be listed as "device"</code></pre>
       <summary>Something isn't working.</summary>
       <p>Open <strong>Show Logs</strong> from the menu bar and check the <a href="https://github.com/harshitbwc/ExDisplay/blob/main/TROUBLESHOOTING.md">troubleshooting guide</a>. If that doesn't help, <a href="https://github.com/harshitbwc/ExDisplay/issues">open an issue</a> with your Mac and tablet models and the copied logs.</p>
     </details>
+  </div>
+</section>
+
+<section id="brand" class="alt">
+  <div class="wrap">
+    <h2>Logo &amp; brand assets</h2>
+    <p class="lede">Free to use when writing about ExDisplay.</p>
+    <div class="assets">
+      <div class="asset"><div class="thumb"><img src="assets/logo-512.png" alt="ExDisplay logo mark" width="160" height="160"></div>
+        <div class="meta"><strong>Logo mark</strong><a href="assets/logo.svg" download>SVG</a><a href="assets/logo-1024.png" download>PNG 1024</a></div></div>
+      <div class="asset"><div class="thumb"><img src="assets/logo-lockup.png" alt="ExDisplay logo with wordmark"></div>
+        <div class="meta"><strong>Logo + wordmark</strong><a href="assets/logo-lockup.png" download>PNG 1600×640</a></div></div>
+      <div class="asset"><div class="thumb"><img src="assets/banner.png" alt="ExDisplay banner"></div>
+        <div class="meta"><strong>Banner / social preview</strong><a href="assets/banner.png" download>PNG 1280×640</a></div></div>
+      <div class="asset"><div class="thumb"><img src="assets/poster.jpg" alt="Launch video poster"></div>
+        <div class="meta"><strong>Launch video</strong><a href="assets/launch.mp4" download>MP4 1080p</a></div></div>
+    </div>
   </div>
 </section>
 

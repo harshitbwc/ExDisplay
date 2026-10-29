@@ -37,3 +37,8 @@ keystore.properties
 
 # ── Local-only notes ───────────────────────────────────
 CLAUDE.md
+
+# ── Remotion (docs/assets are the committed outputs) ──────
+promo/node_modules/
+promo/out/
+promo/dist/

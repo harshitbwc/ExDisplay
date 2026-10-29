@@ -1,6 +1,10 @@
+<p align="center">
+  <img src="docs/assets/banner.png" alt="ExDisplay: turn your Android tablet into a second display for your Mac" width="720">
+</p>
+
 # ExDisplay
 
-**Website: https://harshitbwc.github.io/ExDisplay/** · [Download the latest release](https://github.com/harshitbwc/ExDisplay/releases/latest)
+**Website: https://harshitbwc.github.io/ExDisplay/** · [Download the latest release](https://github.com/harshitbwc/ExDisplay/releases/latest) · [Launch video](https://harshitbwc.github.io/ExDisplay/#video)
 
 Turn an Android tablet into a **wired, touch-enabled extended display** for a Mac.
 
