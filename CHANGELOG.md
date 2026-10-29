@@ -4,17 +4,16 @@ All notable changes to ExDisplay. Versioning is [SemVer](https://semver.org/);
 the single source of truth for the current version is the repo-root `VERSION` file
 (consumed by both `mac/make-app.sh` and `android/app/build.gradle`).
 
-## [Unreleased]
+## [1.2.0] — 2026-06-01
+### Added
+- **3-finger swipe** → Spaces / Mission Control / App Exposé (wire protocol v3).
+  Mapped to Ctrl+arrow keyboard shortcuts (CGEvent can't emit real trackpad gestures).
+
 ### Changed
 - Android application ID is now `io.github.harshitbwc.exdisplay` (was the placeholder
   `com.example.tabdisplay`). It installs as a new app; uninstall the old one.
 - Android release builds can be signed via `keystore.properties` or environment
   variables; tagged releases are built and published by GitHub Actions.
-
-## [1.2.0] — 2026-06-01
-### Added
-- **3-finger swipe** → Spaces / Mission Control / App Exposé (wire protocol v3).
-  Mapped to Ctrl+arrow keyboard shortcuts (CGEvent can't emit real trackpad gestures).
 
 ## [1.1.0] — 2026-06-01
 ### Added
