@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" fill="none">
+  <title>ExDisplay</title>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="256" y2="256" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3B82F6"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="58" fill="url(#g)"/>
+  <rect x="30" y="66" width="122" height="84" rx="14" stroke="#fff" stroke-width="12"/>
+  <path d="M91 150V176M62 180H120" stroke="#fff" stroke-width="12" stroke-linecap="round"/>
+  <rect x="166" y="96" width="60" height="92" rx="12" fill="#fff"/>
+  <circle cx="196" cy="174" r="5" fill="#5B5BEF"/>
+</svg>
