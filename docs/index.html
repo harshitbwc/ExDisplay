@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ExDisplay — Use an Android tablet as a wired Mac display</title>
+<meta name="description" content="ExDisplay turns an Android tablet into a wired, touch-enabled extended display for your Mac. Not a mirror — a real extra display, over a USB cable.">
+<meta property="og:title" content="ExDisplay — Android tablet as a wired Mac display">
+<meta property="og:description" content="A real extended display for Apple Silicon Macs, over USB, with touch. Free and open source.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://harshitbwc.github.io/ExDisplay/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='6' width='26' height='17' rx='3' fill='%232563eb'/%3E%3Crect x='12' y='25' width='8' height='2' rx='1' fill='%232563eb'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: #ffffff; --bg-alt: #f5f7fa; --fg: #14181f; --muted: #566074;
+    --line: #dfe4ec; --accent: #2563eb; --accent-fg: #ffffff; --card: #ffffff;
+    --code-bg: #eef1f6; --ok: #15803d;
+    --maxw: 1040px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0e1116; --bg-alt: #141922; --fg: #e8ecf3; --muted: #9aa5b8;
+      --line: #263042; --accent: #5b8def; --accent-fg: #0b1020; --card: #171d28;
+      --code-bg: #1b2330; --ok: #4ade80;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); }
+  code, kbd { font: 0.9em ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: var(--code-bg); padding: 0.1em 0.4em; border-radius: 5px; }
+  pre { background: var(--code-bg); padding: 14px 16px; border-radius: 10px; overflow-x: auto; margin: 12px 0; line-height: 1.5; }
+  pre code { background: none; padding: 0; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 16px; }
+  section { padding: 64px 0; }
+  section.alt { background: var(--bg-alt); border-block: 1px solid var(--line); }
+  h1, h2, h3 { line-height: 1.2; margin: 0 0 12px; letter-spacing: -0.015em; }
+  h1 { font-size: clamp(2rem, 5vw, 3.25rem); }
+  h2 { font-size: clamp(1.5rem, 3vw, 2rem); }
+  h3 { font-size: 1.1rem; }
+  p { margin: 0 0 14px; }
+  .lede { font-size: 1.2rem; color: var(--muted); max-width: 640px; }
+
+  nav { border-bottom: 1px solid var(--line); position: sticky; top: 0; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(8px); z-index: 10; }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 56px; gap: 16px; }
+  nav .brand { font-weight: 700; color: var(--fg); text-decoration: none; }
+  nav .links { display: flex; gap: 18px; font-size: 0.95rem; overflow-x: auto; }
+  nav .links a { color: var(--muted); text-decoration: none; white-space: nowrap; }
+  nav .links a:hover { color: var(--fg); }
+
+  .hero { padding: 72px 0 56px; }
+  .badge { display: inline-block; font-size: 0.8rem; padding: 3px 10px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); margin-bottom: 18px; }
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; margin: 26px 0 10px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 10px; font-weight: 600; text-decoration: none; border: 1px solid var(--line); color: var(--fg); background: var(--card); }
+  .btn.primary { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+  .btn:hover { filter: brightness(1.06); }
+  .small { font-size: 0.88rem; color: var(--muted); }
+
+  .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin-top: 24px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; }
+  .card p { margin: 0; color: var(--muted); font-size: 0.97rem; }
+
+  figure { margin: 28px 0 0; }
+  figure svg { width: 100%; height: auto; display: block; }
+  figcaption { font-size: 0.9rem; color: var(--muted); margin-top: 10px; }
+  svg text { font-family: inherit; fill: var(--fg); font-size: 13px; }
+  svg .mut { fill: var(--muted); font-size: 11.5px; }
+  svg .box { fill: var(--card); stroke: var(--line); stroke-width: 1.5; }
+  svg .hot { fill: var(--card); stroke: var(--accent); stroke-width: 2; }
+  svg .arrow { stroke: var(--muted); stroke-width: 1.6; fill: none; }
+  svg .arrowhead { fill: var(--muted); }
+  svg .zone { fill: none; stroke: var(--line); stroke-dasharray: 5 5; stroke-width: 1.5; }
+
+  ol.steps { list-style: none; padding: 0; margin: 20px 0 0; counter-reset: s; display: grid; gap: 14px; }
+  ol.steps > li { counter-increment: s; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px 18px 64px; position: relative; }
+  ol.steps > li::before { content: counter(s); position: absolute; left: 20px; top: 18px; width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: var(--accent-fg); font-weight: 700; display: grid; place-items: center; }
+  ol.steps h3 { margin-bottom: 6px; }
+  ol.steps p:last-child, ol.steps pre:last-child { margin-bottom: 0; }
+
+  table { width: 100%; border-collapse: collapse; margin-top: 16px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  th, td { text-align: left; padding: 11px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  th { font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); background: var(--bg-alt); }
+  .tablewrap { overflow-x: auto; }
+
+  details { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 18px; margin-top: 10px; }
+  summary { cursor: pointer; font-weight: 600; }
+  details p { margin: 10px 0 0; color: var(--muted); }
+
+  footer { border-top: 1px solid var(--line); padding: 32px 0 48px; color: var(--muted); font-size: 0.92rem; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+  @media (max-width: 560px) {
+    section { padding: 44px 0; }
+    .hero { padding: 48px 0 36px; }
+    ol.steps > li { padding-left: 58px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#top">ExDisplay</a>
+    <div class="links">
+      <a href="#how">How it works</a>
+      <a href="#install">Install</a>
+      <a href="#touch">Touch</a>
+      <a href="#limits">Limitations</a>
+      <a href="https://github.com/harshitbwc/ExDisplay">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <span class="badge">Free &amp; open source · MIT</span>
+    <h1>Your Android tablet,<br>as a real Mac display.</h1>
+    <p class="lede">ExDisplay turns an Android tablet into a wired, touch-enabled <strong>extended</strong> display for your Mac. Not a mirror: macOS sees an extra screen it can put windows on, and touching the tablet drives the cursor.</p>
+    <div class="cta">
+      <a class="btn primary" id="dl-mac" href="https://github.com/harshitbwc/ExDisplay/releases/latest">Download for Mac</a>
+      <a class="btn" id="dl-apk" href="https://github.com/harshitbwc/ExDisplay/releases/latest">Download Android app</a>
+    </div>
+    <p class="small" id="dl-note">Apple Silicon Mac (macOS 14+) and an Android 8.0+ tablet · <a href="https://github.com/harshitbwc/ExDisplay/releases/latest">all releases</a></p>
+  </div>
+</header>
+
+<section class="alt" id="features">
+  <div class="wrap">
+    <h2>Why it's different</h2>
+    <div class="grid">
+      <div class="card"><h3>A true extended display</h3><p>Drag windows onto it from System Settings → Displays, like any monitor. It is a software-only virtual display, so it works alongside your physical monitors and doesn't use up a display output.</p></div>
+      <div class="card"><h3>Wired over USB</h3><p>Video and touch travel over your USB cable. No Wi-Fi, no pairing, nothing exposed to your network.</p></div>
+      <div class="card"><h3>Trackpad-style touch</h3><p>One finger moves and clicks, two fingers scroll, three fingers swipe between Spaces or open Mission Control.</p></div>
+      <div class="card"><h3>Private by design</h3><p>No accounts, no telemetry, no servers. Only the virtual display is captured, never your other screens.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <h2>How it works</h2>
+    <p class="lede">A USB-C cable alone can't make a tablet a display, so ExDisplay uses the cable as a data pipe and does the rest in software.</p>
+    <figure>
+      <svg viewBox="0 0 900 250" role="img" aria-labelledby="dt dd">
+        <title id="dt">ExDisplay data flow</title>
+        <desc id="dd">On the Mac, a virtual display is captured, encoded to H.264 and served over a local TCP port. Over USB via adb reverse, the tablet decodes and shows the video, and sends touch input back to the Mac.</desc>
+        <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="arrowhead"/></marker></defs>
+
+        <rect class="zone" x="6" y="6" width="560" height="238" rx="14"/>
+        <text class="mut" x="20" y="28">MAC</text>
+        <rect class="zone" x="634" y="6" width="260" height="238" rx="14"/>
+        <text class="mut" x="648" y="28">TABLET</text>
+
+        <rect class="box" x="24" y="52" width="150" height="52" rx="10"/>
+        <text x="99" y="74" text-anchor="middle">Virtual display</text><text class="mut" x="99" y="92" text-anchor="middle">CGVirtualDisplay</text>
+        <rect class="box" x="204" y="52" width="150" height="52" rx="10"/>
+        <text x="279" y="74" text-anchor="middle">Capture</text><text class="mut" x="279" y="92" text-anchor="middle">ScreenCaptureKit</text>
+        <rect class="box" x="384" y="52" width="164" height="52" rx="10"/>
+        <text x="466" y="74" text-anchor="middle">H.264 encode</text><text class="mut" x="466" y="92" text-anchor="middle">VideoToolbox</text>
+        <path class="arrow" d="M174 78 H202" marker-end="url(#ah)"/>
+        <path class="arrow" d="M354 78 H382" marker-end="url(#ah)"/>
+
+        <rect class="hot" x="384" y="150" width="164" height="52" rx="10"/>
+        <text x="466" y="172" text-anchor="middle">TCP 127.0.0.1:8888</text><text class="mut" x="466" y="190" text-anchor="middle">local only</text>
+        <path class="arrow" d="M466 104 V148" marker-end="url(#ah)"/>
+
+        <rect class="box" x="24" y="150" width="150" height="52" rx="10"/>
+        <text x="99" y="172" text-anchor="middle">Cursor control</text><text class="mut" x="99" y="190" text-anchor="middle">CGEvent injection</text>
+        <path class="arrow" d="M382 176 H176" marker-end="url(#ah)"/>
+
+        <rect class="box" x="650" y="52" width="228" height="52" rx="10"/>
+        <text x="764" y="74" text-anchor="middle">Decode &amp; display</text><text class="mut" x="764" y="92" text-anchor="middle">MediaCodec → SurfaceView</text>
+        <rect class="box" x="650" y="150" width="228" height="52" rx="10"/>
+        <text x="764" y="172" text-anchor="middle">Touch input</text><text class="mut" x="764" y="190" text-anchor="middle">normalized x, y</text>
+
+        <path class="arrow" d="M550 164 C 590 164, 600 78, 648 78" marker-end="url(#ah)"/>
+        <path class="arrow" d="M648 176 C 600 176, 590 190, 550 190" marker-end="url(#ah)"/>
+        <text class="mut" x="592" y="130" text-anchor="middle" transform="rotate(0)">USB</text>
+      </svg>
+      <figcaption>The tablet reaches the Mac's <code>localhost</code> through <code>adb reverse</code>, so there is no custom USB driver on either side. The Mac app runs the command for you automatically.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="alt" id="install">
+  <div class="wrap">
+    <h2>Install</h2>
+    <p class="lede">You need a Mac, an Android tablet, a data-capable USB cable and <code>adb</code>.</p>
+    <ol class="steps">
+      <li>
+        <h3>Prepare the tablet</h3>
+        <p>Enable <strong>USB debugging</strong>: Settings → About → tap <em>Build number</em> 7 times, then Developer options → USB debugging. Plug the tablet in and accept the "Allow USB debugging?" prompt.</p>
+        <pre><code>brew install android-platform-tools
+adb devices        # your tablet should be listed as "device"</code></pre>
+      </li>
+      <li>
+        <h3>Install the Mac app</h3>
+        <p>Download <code>ExDisplay-&lt;version&gt;-mac-arm64.zip</code> from the <a href="https://github.com/harshitbwc/ExDisplay/releases/latest">latest release</a>, unzip it and move <code>ExDisplay.app</code> to <code>/Applications</code>.</p>
+        <p>The app is ad-hoc signed, not notarized by Apple, so macOS blocks the first launch. On macOS 15 or later, open System Settings → Privacy &amp; Security and choose <strong>Open Anyway</strong>, or run:</p>
+        <pre><code>xattr -dr com.apple.quarantine /Applications/ExDisplay.app</code></pre>
+        <p>ExDisplay lives in the menu bar. Click each ⚠️ item to grant <strong>Screen Recording</strong> and <strong>Accessibility</strong>, then quit and reopen it.</p>
+      </li>
+      <li>
+        <h3>Install the Android app</h3>
+        <p>Download <code>ExDisplay-&lt;version&gt;-android.apk</code> from the same release and install it:</p>
+        <pre><code>adb install -r ExDisplay-&lt;version&gt;-android.apk</code></pre>
+        <p>Always use the Mac and Android apps from the <strong>same release</strong>.</p>
+      </li>
+      <li>
+        <h3>Open the tablet app</h3>
+        <p>It connects automatically. The dot in the corner turns green, and a new display appears in System Settings → Displays where you can arrange it.</p>
+      </li>
+    </ol>
+    <p class="small" style="margin-top:18px">Prefer to build it yourself? See the <a href="https://github.com/harshitbwc/ExDisplay#option-b--build-from-source">build-from-source steps</a>. Each release includes SHA-256 checksums.</p>
+  </div>
+</section>
+
+<section id="touch">
+  <div class="wrap">
+    <h2>Touch works like a trackpad</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Gesture</th><th>Action on the Mac</th></tr></thead>
+        <tbody>
+          <tr><td>1 finger tap / drag</td><td>Click / drag the cursor</td></tr>
+          <tr><td>1 finger move</td><td>Move the cursor</td></tr>
+          <tr><td>2 fingers pan</td><td>Scroll</td></tr>
+          <tr><td>3 fingers swipe ← / →</td><td>Next / previous Space</td></tr>
+          <tr><td>3 fingers swipe ↑</td><td>Mission Control</td></tr>
+          <tr><td>3 fingers swipe ↓</td><td>App Exposé</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small" style="margin-top:12px">Three-finger swipes use Mission Control's keyboard shortcuts, so they need more than one Space and those shortcuts enabled (both are the macOS defaults).</p>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <h2>At a glance</h2>
+    <div class="tablewrap">
+      <table>
+        <tbody>
+          <tr><th>Resolution</th><td>1340×800 by default; presets up to 2560×1600 in the Settings menu</td></tr>
+          <tr><th>Refresh rate</th><td>60 Hz</td></tr>
+          <tr><th>Codec</th><td>H.264, 18 Mbps by default (8–40 Mbps adjustable live)</td></tr>
+          <tr><th>Transport</th><td>TCP on <code>127.0.0.1:8888</code> through <code>adb reverse</code> over USB</td></tr>
+          <tr><th>Mac</th><td>Apple Silicon, macOS 14 or later (developed on macOS 26)</td></tr>
+          <tr><th>Tablet</th><td>Android 8.0 or later (developed on a Galaxy Tab A9, Android 13)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="limits">
+  <div class="wrap">
+    <h2>Limitations &amp; FAQ</h2>
+    <details>
+      <summary>Why can't I watch Netflix or Apple TV+ while it's running?</summary>
+      <p>macOS blocks DRM-protected playback system-wide whenever a screen capture session is active. Use <strong>Pause Streaming</strong> in the menu bar to watch, then resume.</p>
+    </details>
+    <details>
+      <summary>Is it safe? What does it capture?</summary>
+      <p>Only the virtual display is captured, and everything stays on your machine: the server listens on loopback only, and there is no telemetry. See the <a href="https://github.com/harshitbwc/ExDisplay/blob/main/SECURITY.md">security and privacy notes</a>.</p>
+    </details>
+    <details>
+      <summary>Will it keep working after macOS updates?</summary>
+      <p>The virtual display uses an undocumented Apple API (<code>CGVirtualDisplay</code>). It works today, but a future macOS release could break it. It also means ExDisplay can never be on the Mac App Store.</p>
+    </details>
+    <details>
+      <summary>Can I use it wirelessly, or with an Intel Mac?</summary>
+      <p>Not currently. It is wired-only and built for Apple Silicon. Pinch-zoom and rotate gestures aren't supported either.</p>
+    </details>
+    <details>
+      <summary>Something isn't working.</summary>
+      <p>Open <strong>Show Logs</strong> from the menu bar and check the <a href="https://github.com/harshitbwc/ExDisplay/blob/main/TROUBLESHOOTING.md">troubleshooting guide</a>. If that doesn't help, <a href="https://github.com/harshitbwc/ExDisplay/issues">open an issue</a> with your Mac and tablet models and the copied logs.</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>ExDisplay · MIT licensed · Design distilled from the MIT-licensed <a href="https://github.com/tranvuongquocdat/SideScreen">Side Screen</a> project</span>
+    <span><a href="https://github.com/harshitbwc/ExDisplay">GitHub</a> · <a href="https://github.com/harshitbwc/ExDisplay/releases">Releases</a> · <a href="https://github.com/harshitbwc/ExDisplay/blob/main/CHANGELOG.md">Changelog</a></span>
+  </div>
+</footer>
+
+<script>
+  // Point the download buttons at the latest release's files. Falls back to the
+  // releases page (already set in the HTML) if the API is unavailable or rate-limited.
+  (function () {
+    fetch('https://api.github.com/repos/harshitbwc/ExDisplay/releases/latest')
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+      .then(function (rel) {
+        var assets = rel.assets || [];
+        function find(suffix) {
+          for (var i = 0; i < assets.length; i++) {
+            if (assets[i].name.slice(-suffix.length) === suffix) return assets[i].browser_download_url;
+          }
+        }
+        var mac = find('-mac-arm64.zip'), apk = find('-android.apk');
+        var v = (rel.tag_name || '').replace(/^v/, '');
+        if (mac) { var m = document.getElementById('dl-mac'); m.href = mac; m.textContent = 'Download for Mac ' + v; }
+        if (apk) { var a = document.getElementById('dl-apk'); a.href = apk; a.textContent = 'Download Android app ' + v; }
+      })
+      .catch(function () {});
+  })();
+</script>
+</body>
+</html>

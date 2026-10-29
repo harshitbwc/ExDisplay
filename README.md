@@ -1,5 +1,7 @@
 # ExDisplay
 
+**Website: https://harshitbwc.github.io/ExDisplay/** · [Download the latest release](https://github.com/harshitbwc/ExDisplay/releases/latest)
+
 Turn an Android tablet into a **wired, touch-enabled extended display** for a Mac.
 
 Not a mirror — macOS sees a real additional display it can render windows to. The
