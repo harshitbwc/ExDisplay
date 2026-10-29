@@ -48,7 +48,7 @@ final class AppController {
         // VirtualDisplay.init() has blocking retries — run off main thread
         Task.detached(priority: .userInitiated) { [weak self] in
             let vd = VirtualDisplay(width: s.width, height: s.height)
-            await MainActor.run { self?.finish(with: vd) }
+            await self?.finish(with: vd)   // finish is @MainActor, so this hops to main
         }
     }
 
