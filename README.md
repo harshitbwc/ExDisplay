@@ -59,6 +59,10 @@ From the [Releases page](https://github.com/harshitbwc/ExDisplay/releases):
    (`adb install -r ExDisplay-<version>-android.apk`, or allow "install unknown apps").
 3. Install `adb` on the Mac: `brew install android-platform-tools`.
 
+Permanent links that always serve the newest release:
+[Mac app](https://github.com/harshitbwc/ExDisplay/releases/latest/download/ExDisplay-mac-arm64.zip) ·
+[Android app](https://github.com/harshitbwc/ExDisplay/releases/latest/download/ExDisplay-android.apk)
+
 Each release lists SHA-256 checksums next to the files. Always install the Mac and
 Android apps from the **same release** (see the compatibility table in the
 [CHANGELOG](CHANGELOG.md)).

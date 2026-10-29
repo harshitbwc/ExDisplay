@@ -298,12 +298,12 @@ adb devices        # your tablet should be listed as "device"</code></pre>
       .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
       .then(function (rel) {
         var assets = rel.assets || [];
-        function find(suffix) {
-          for (var i = 0; i < assets.length; i++) {
-            if (assets[i].name.slice(-suffix.length) === suffix) return assets[i].browser_download_url;
-          }
+        function find(exact, suffix) {
+          var i;
+          for (i = 0; i < assets.length; i++) if (assets[i].name === exact) return assets[i].browser_download_url;
+          for (i = 0; i < assets.length; i++) if (assets[i].name.slice(-suffix.length) === suffix) return assets[i].browser_download_url;
         }
-        var mac = find('-mac-arm64.zip'), apk = find('-android.apk');
+        var mac = find('ExDisplay-mac-arm64.zip', '-mac-arm64.zip'), apk = find('ExDisplay-android.apk', '-android.apk');
         var v = (rel.tag_name || '').replace(/^v/, '');
         if (mac) { var m = document.getElementById('dl-mac'); m.href = mac; m.textContent = 'Download for Mac ' + v; }
         if (apk) { var a = document.getElementById('dl-apk'); a.href = apk; a.textContent = 'Download Android app ' + v; }

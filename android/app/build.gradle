@@ -8,6 +8,13 @@ def exVersion = file("${rootDir}/../VERSION").exists()
         ? file("${rootDir}/../VERSION").text.trim()
         : "0.0.0"
 
+// versionCode must increase with every release (Android refuses downgrades, and update
+// trackers rely on it): MAJOR*10000 + MINOR*100 + PATCH, e.g. 1.2.1 -> 10201.
+def exParts = exVersion.tokenize('.')
+def exVersionCode = (exParts.size() == 3 && exParts.every { it.isInteger() })
+        ? exParts[0].toInteger() * 10000 + exParts[1].toInteger() * 100 + exParts[2].toInteger()
+        : 1
+
 android {
     namespace 'io.github.harshitbwc.exdisplay'
     compileSdk 34
@@ -16,7 +23,7 @@ android {
         applicationId "io.github.harshitbwc.exdisplay"
         minSdk 26
         targetSdk 34
-        versionCode 1
+        versionCode exVersionCode
         versionName exVersion
     }
 

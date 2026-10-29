@@ -4,6 +4,16 @@ All notable changes to ExDisplay. Versioning is [SemVer](https://semver.org/);
 the single source of truth for the current version is the repo-root `VERSION` file
 (consumed by both `mac/make-app.sh` and `android/app/build.gradle`).
 
+## [1.2.1] — 2026-10-29
+### Changed
+- Releases now also attach fixed-name files (`ExDisplay-mac-arm64.zip`,
+  `ExDisplay-android.apk`, with `.sha256`), so permanent links like
+  `https://github.com/harshitbwc/ExDisplay/releases/latest/download/ExDisplay-android.apk`
+  always serve the newest build.
+- Android `versionCode` is now derived from `VERSION` (1.2.1 → 10201) so app updates
+  are recognised as upgrades. Because it was previously `1`, install 1.2.1 over 1.2.0
+  with `adb install -r`, or uninstall first if your package installer refuses.
+
 ## [1.2.0] — 2026-06-01
 ### Added
 - **3-finger swipe** → Spaces / Mission Control / App Exposé (wire protocol v3).

@@ -31,6 +31,9 @@ jobs:
           VERSION="$(tr -d '[:space:]' < VERSION)"
           ditto -c -k --keepParent mac/ExDisplay.app "ExDisplay-${VERSION}-mac-arm64.zip"
           shasum -a 256 "ExDisplay-${VERSION}-mac-arm64.zip" > "ExDisplay-${VERSION}-mac-arm64.zip.sha256"
+          # Fixed-name copy so .../releases/latest/download/ExDisplay-mac-arm64.zip never changes.
+          cp "ExDisplay-${VERSION}-mac-arm64.zip" ExDisplay-mac-arm64.zip
+          shasum -a 256 ExDisplay-mac-arm64.zip > ExDisplay-mac-arm64.zip.sha256
       - uses: actions/upload-artifact@v4
         with:
           name: mac
@@ -68,6 +71,9 @@ jobs:
           VERSION="$(tr -d '[:space:]' < VERSION)"
           cp android/app/build/outputs/apk/release/app-release.apk "ExDisplay-${VERSION}-android.apk"
           sha256sum "ExDisplay-${VERSION}-android.apk" > "ExDisplay-${VERSION}-android.apk.sha256"
+          # Fixed-name copy so .../releases/latest/download/ExDisplay-android.apk never changes.
+          cp "ExDisplay-${VERSION}-android.apk" ExDisplay-android.apk
+          sha256sum ExDisplay-android.apk > ExDisplay-android.apk.sha256
       - uses: actions/upload-artifact@v4
         with:
           name: android
