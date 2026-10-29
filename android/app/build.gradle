@@ -27,16 +27,16 @@ android {
     if (ksFile.exists()) ksFile.withInputStream { ksProps.load(it) }
     def ksPath  = System.getenv('EXDISPLAY_KEYSTORE')          ?: ksProps['storeFile']
     def ksPass  = System.getenv('EXDISPLAY_KEYSTORE_PASSWORD') ?: ksProps['storePassword']
-    def keyAlias = System.getenv('EXDISPLAY_KEY_ALIAS')        ?: ksProps['keyAlias']
-    def keyPass = System.getenv('EXDISPLAY_KEY_PASSWORD')      ?: ksProps['keyPassword']
+    def ksAlias = System.getenv('EXDISPLAY_KEY_ALIAS')         ?: ksProps['keyAlias']
+    def ksKeyPass = System.getenv('EXDISPLAY_KEY_PASSWORD')    ?: ksProps['keyPassword']
 
     signingConfigs {
-        if (ksPath && ksPass && keyAlias && keyPass) {
+        if (ksPath && ksPass && ksAlias && ksKeyPass) {
             release {
                 storeFile file(ksPath)
                 storePassword ksPass
-                keyAlias keyAlias
-                keyPassword keyPass
+                keyAlias ksAlias
+                keyPassword ksKeyPass
             }
         }
     }
