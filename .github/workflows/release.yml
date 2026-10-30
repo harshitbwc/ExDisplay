@@ -20,7 +20,7 @@ jobs:
 
   mac:
     needs: check-version
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
       - name: Build ExDisplay.app (ad-hoc signed)
